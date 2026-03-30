@@ -3,7 +3,7 @@
 ## Phase 1 - MVP
 
 - [x] chore: Initialize the Project
-- [ ] feat: Prepare A Basic Message Text Box
+- [x] feat: Prepare A Basic Message Text Box
 - [ ] feat: Prepare a message list for the channel
 - [ ] feat: Make the Text Box send the message to the Backend
 - [ ] feat: Make the Text Box do an optimistic UI add, and in case of success, use the returned message, otherwise removed
