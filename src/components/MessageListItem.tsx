@@ -9,7 +9,7 @@ const MessageListItem = ({ message }: Props) => {
 	return (
 		<>
 			<div>
-				Message ID {message.id}: {message.content}
+				Message ID {message._id}: {message.content}
 				{"  "}
 				<hr />
 			</div>
