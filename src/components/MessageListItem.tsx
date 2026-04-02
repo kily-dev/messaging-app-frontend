@@ -11,6 +11,7 @@ const MessageListItem = ({ message }: Props) => {
 			<div>
 				Message ID {message._id}: {message.content}
 				{"  "}
+				{message.status === "sending" && "(sending...)"}
 				<hr />
 			</div>
 		</>

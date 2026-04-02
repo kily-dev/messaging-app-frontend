@@ -8,6 +8,7 @@ const messageSchema = z.object({
 	content: z.string().min(1),
 	createdAt: z.date().optional(),
 	updatedAt: z.date().optional(),
+	status: z.enum(["sending", "sent", "error"]).default("sent"),
 });
 
 const url = "http://localhost:3000/messages";
@@ -18,12 +19,13 @@ export const messageBoxSchema = messageSchema.omit({
 	_id: true,
 	createdAt: true,
 	updatedAt: true,
+	status: true,
 });
 
 export type MessageBoxShape = z.infer<typeof messageBoxSchema>;
 
 const useMessages = () => {
-	const [messages, setMessages] = useState<Message[]>();
+	const [messages, setMessages] = useState<Message[]>([]);
 
 	useEffect(() => {
 		axios
@@ -34,14 +36,30 @@ const useMessages = () => {
 
 	const postMessage = (messageBox: MessageBoxShape) => {
 		const now = new Date(Date.now());
+		const newId = uuidv4();
 		const newMessage: Message = {
-			_id: uuidv4(),
+			_id: newId,
 			content: messageBox.content,
 			createdAt: now,
 			updatedAt: now,
+			status: "sending",
 		};
 		console.log(newMessage);
-		axios.post(url, newMessage);
+		setMessages((curr) => [...curr, newMessage]);
+		axios
+			.post(url, newMessage)
+			.then((res) =>
+				setMessages((curr) =>
+					curr.map((message) =>
+						message._id === newId ? res.data : message,
+					),
+				),
+			)
+			.catch(() => {
+				setMessages((curr) =>
+					curr.filter((message) => message._id !== newId),
+				);
+			});
 	};
 
 	return { messages, postMessage };
