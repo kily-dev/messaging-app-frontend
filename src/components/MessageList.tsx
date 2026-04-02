@@ -1,6 +1,7 @@
 import React from "react";
 import useMessagesContext from "../hooks/useMessagesContext";
 import MessageListItem from "./MessageListItem";
+import { socket } from "../sockets/socket";
 
 const MessageList = () => {
 	const { messages } = useMessagesContext();
