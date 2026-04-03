@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
+import { socket } from "../sockets/socket";
 
 const messageSchema = z.object({
 	_id: z.uuidv4(),
@@ -47,7 +48,7 @@ const useMessages = () => {
 		console.log(newMessage);
 		setMessages((curr) => [...curr, newMessage]);
 		axios
-			.post(url, newMessage)
+			.post(url, { ...newMessage, socketId: socket.id })
 			.then((res) =>
 				setMessages((curr) =>
 					curr.map((message) =>
@@ -61,6 +62,14 @@ const useMessages = () => {
 				);
 			});
 	};
+
+	useEffect(() => {
+		const handler = (msg: Message) => setMessages((curr) => [...curr, msg]);
+		socket.on("receive_message", handler);
+		return () => {
+			socket.off("receive_message", handler);
+		};
+	}, []);
 
 	return { messages, postMessage };
 };
