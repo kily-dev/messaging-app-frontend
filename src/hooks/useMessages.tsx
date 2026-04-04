@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { socket } from "../sockets/socket";
+import useChannelsContext from "./useChannelsContext";
 
 const messageSchema = z.object({
 	_id: z.uuidv4(),
 	content: z.string().min(1),
 	createdAt: z.date().optional(),
 	updatedAt: z.date().optional(),
+	channelId: z.string(),
 	status: z.enum(["sending", "sent", "error"]).default("sent"),
 });
 
@@ -20,6 +22,7 @@ export const messageBoxSchema = messageSchema.omit({
 	_id: true,
 	createdAt: true,
 	updatedAt: true,
+	channelId: true,
 	status: true,
 });
 
@@ -27,15 +30,17 @@ export type MessageBoxShape = z.infer<typeof messageBoxSchema>;
 
 const useMessages = () => {
 	const [messages, setMessages] = useState<Message[]>([]);
+	const { currentChannel } = useChannelsContext();
 
 	useEffect(() => {
 		axios
-			.get<Message[]>(url)
+			.get<Message[]>(url, { params: { channelId: currentChannel?._id } })
 			.then((res) => setMessages(res.data))
 			.catch((err) => console.error(err));
-	}, []);
+	}, [currentChannel]);
 
 	const postMessage = (messageBox: MessageBoxShape) => {
+		if (!currentChannel) return;
 		const now = new Date(Date.now());
 		const newId = uuidv4();
 		const newMessage: Message = {
@@ -43,6 +48,7 @@ const useMessages = () => {
 			content: messageBox.content,
 			createdAt: now,
 			updatedAt: now,
+			channelId: currentChannel?._id,
 			status: "sending",
 		};
 		console.log(newMessage);

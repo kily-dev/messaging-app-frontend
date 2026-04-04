@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { z } from "zod";
+import { socket } from "../sockets/socket";
 
 const channelSchema = z.object({
 	_id: z.string(),
@@ -15,6 +16,7 @@ const url = "http://localhost:3000/channels";
 
 const useChannels = () => {
 	const [channels, setChannels] = useState<Channel[]>();
+	const [currentChannel, setCurrentChannel] = useState<Channel | null>(null);
 
 	useEffect(() => {
 		axios
@@ -23,7 +25,12 @@ const useChannels = () => {
 			.catch((err) => console.error(err));
 	}, []);
 
-	return { channels };
+	const channelSwitch = (channel: Channel) => {
+		socket.emit("join_room", channel._id);
+		setCurrentChannel(channel);
+	};
+
+	return { channels, currentChannel, channelSwitch };
 };
 
 export default useChannels;
