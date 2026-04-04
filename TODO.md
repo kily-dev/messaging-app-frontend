@@ -11,5 +11,4 @@
 - [x] feat: Open a Socket connection with the backend
 - [x] feat: Make the message list update in realtime
 - [x] feat: Create Channel List and Fetch Channels and Display
-- [ ] feat: Fetch Messages per Channel
-- [ ] feat: Make message destination to specific channels
+- [ ] feat: Fetch Messages per Channel and send new messages to channel
