@@ -1,20 +1,18 @@
 import React from "react";
-import MessageBox from "./components/MessageBox";
 import MessageList from "./components/MessageList";
-import ChannelList from "./components/ChannelList";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
 
 const App = () => {
 	return (
 		<>
-			<h1>Instant Messaging App</h1>
-
-			<ChannelList />
-
-			<p>You are currently on the main channel</p>
-
-			<MessageList />
-
-			<MessageBox />
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<MainLayout />}>
+						<Route path="channel/:id" element={<MessageList />} />
+					</Route>
+				</Routes>
+			</BrowserRouter>
 		</>
 	);
 };
