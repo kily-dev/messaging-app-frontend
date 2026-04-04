@@ -31,6 +31,7 @@ export type MessageBoxShape = z.infer<typeof messageBoxSchema>;
 const useMessages = () => {
 	const [messages, setMessages] = useState<Message[]>([]);
 	const { currentChannel } = useChannelsContext();
+	const [scrollDown, setScrollDown] = useState<boolean>(false);
 
 	useEffect(() => {
 		axios
@@ -53,6 +54,7 @@ const useMessages = () => {
 		};
 		console.log(newMessage);
 		setMessages((curr) => [...curr, newMessage]);
+		setScrollDown(true);
 		axios
 			.post(url, { ...newMessage, socketId: socket.id })
 			.then((res) =>
@@ -77,7 +79,7 @@ const useMessages = () => {
 		};
 	}, []);
 
-	return { messages, postMessage };
+	return { messages, postMessage, scrollDown, setScrollDown };
 };
 
 export default useMessages;

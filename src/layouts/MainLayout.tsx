@@ -7,26 +7,28 @@ import { Outlet } from "react-router-dom";
 const MainLayout = () => {
 	const { currentChannel } = useChannelsContext();
 	return (
-		<>
-			<header>
+		<div className="flex flex-col h-screen overflow-hidden">
+			<header className="flex-none">
 				<nav>
 					<NavBar />
 				</nav>
 			</header>
 
-			<main>
+			<main className="flex-1 flex flex-col">
 				{currentChannel ? (
 					<>
-						<div>
+						<div className=" overflow-y-auto flex flex-col-reverse h-[calc(100vh-6.5rem)]">
 							<Outlet />
 						</div>
-						<MessageBox />
+						<div className=" flex-none ">
+							<MessageBox />
+						</div>
 					</>
 				) : (
 					"Join a Channel to start!"
 				)}
 			</main>
-		</>
+		</div>
 	);
 };
 
