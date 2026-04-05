@@ -14,6 +14,6 @@
 - [x] feat: Fetch Messages per Channel and send new messages to channel
 - [x] feat: Add Page Routing
 - [x] style: Prepare the Basic Layout Styling
-- [ ] feat: Prepare User model
+- [x] feat: Prepare User model
 - [ ] feat: Preparing the Session's ID for user Generation in backend
 - [ ] feat: Display List of user active in a session
