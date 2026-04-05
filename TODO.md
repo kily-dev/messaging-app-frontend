@@ -15,5 +15,5 @@
 - [x] feat: Add Page Routing
 - [x] style: Prepare the Basic Layout Styling
 - [x] feat: Prepare User model
-- [ ] feat: Preparing the Session's ID for user Generation in backend
+- [x] feat: Preparing the Session's ID for user Generation in backend
 - [ ] feat: Display List of user active in a session
