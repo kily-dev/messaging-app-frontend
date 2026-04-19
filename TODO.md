@@ -16,4 +16,4 @@
 - [x] style: Prepare the Basic Layout Styling
 - [x] feat: Prepare User model
 - [x] feat: Preparing the Session's ID for user Generation in backend
-- [ ] feat: Display List of user active in a session
+- [x] feat: Display List of user active in a session

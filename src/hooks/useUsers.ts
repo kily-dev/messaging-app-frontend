@@ -7,12 +7,11 @@ const userSchema = z.object({
 	_id: z.string(),
 	username: z.string().min(8),
 	color: z.string().default("NC"),
-	sessionId: z.string(),
 });
 
-type User = z.infer<typeof userSchema>;
+export type User = z.infer<typeof userSchema>;
 
-const url = "http://localhost:3000/users";
+export const url = "http://localhost:3000/users";
 
 const useUsers = () => {
 	const [currentUser, setCurrentUser] = useState<User>();

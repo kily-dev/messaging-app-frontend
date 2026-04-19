@@ -17,7 +17,7 @@ const MainLayout = () => {
 			<main className="flex-1 flex flex-col">
 				{currentChannel ? (
 					<>
-						<div className=" overflow-y-auto flex flex-col-reverse h-[calc(100vh-6.5rem)]">
+						<div className=" overflow-hidden flex flex-row  h-[calc(100vh-6.5rem)]">
 							<Outlet />
 						</div>
 						<div className=" flex-none ">
