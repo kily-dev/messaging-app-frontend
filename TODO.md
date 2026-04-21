@@ -17,3 +17,7 @@
 - [x] feat: Prepare User model
 - [x] feat: Preparing the Session's ID for user Generation in backend
 - [x] feat: Display List of user active in a session
+
+## Phase 2 - Styling
+
+- [ ] style: General UI Overhaul
