@@ -9,10 +9,9 @@ interface Props {
 }
 
 const ChannelListItem = ({ channel }: Props) => {
-	const { channelSwitch, currentChannel } = useChannelsContext();
+	const { currentChannel } = useChannelsContext();
 	const navigate = useNavigate();
 	const handleClick = () => {
-		channelSwitch(channel);
 		navigate("/channel/" + channel._id);
 	};
 	return (
