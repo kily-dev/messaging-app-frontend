@@ -24,8 +24,10 @@ const MessageBox = () => {
 		reset();
 	};
 	return (
-		<form onSubmit={handleSubmit(submitHandler)}>
+		<form className="w-full" onSubmit={handleSubmit(submitHandler)}>
 			<input
+				className="bg-neutral-900  text-white p-5 mt-1 w-full rounded-xl border border-neutral-800  focus:outline-none focus:shadow-[0_0_40px_0px_var(--tw-shadow-color)] shadow-primary-800 transition-all duration-500"
+				autoComplete="off"
 				{...register("content")}
 				id="content"
 				placeholder="Message..."

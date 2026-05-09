@@ -3,10 +3,15 @@ import useMessagesContext from "../hooks/useMessagesContext";
 import MessageListItem from "./MessageListItem";
 import { socket } from "../sockets/socket";
 import useChannelsContext from "../hooks/useChannelsContext";
+import MessageBox from "./MessageBox";
+import ChannelMemberListItem from "./ChannelMemberListItem";
+import ChannelMemberList from "./ChannelMemberList";
+import { useOutletContext } from "react-router-dom";
 
 const MessageList = () => {
 	const { messages, scrollDown, setScrollDown } = useMessagesContext();
 	const { activeUsers } = useChannelsContext();
+	const { isMembersBarOpen } = useOutletContext();
 	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -18,19 +23,49 @@ const MessageList = () => {
 
 	return (
 		<>
-			<div className="flex flex-1 flex-col-reverse overflow-y-auto">
+			<div className=" flex flex-1 min-h-0 flex-col-reverse overflow-y-auto scroll-stable">
+				<div className="sticky ml-2 mr-1 bottom-2 z-99 justify-items-center ">
+					<MessageBox />
+				</div>
+
+				<div className="sticky min-h-2 bottom-0 bg-neutral-950 z-25 " />
+
 				<div ref={ref} />
-				<div>
-					{messages?.map((message) => (
-						<MessageListItem message={message} />
-					))}
+
+				<div className=" py-5  ">
+					{messages?.map((message, index) => {
+						const previousMessage = messages[index - 1];
+						let isGrouped = false;
+						if (previousMessage && message) {
+							if (
+								previousMessage.userId === message.userId &&
+								message.userId != "unknown"
+							)
+								if (
+									message.createdAt &&
+									previousMessage.createdAt
+								) {
+									const diff =
+										new Date(message.createdAt).getTime() -
+										new Date(
+											previousMessage.createdAt,
+										).getTime();
+									if (diff < 420000 && diff > -420000) {
+										isGrouped = true;
+									}
+								}
+						}
+
+						return (
+							<MessageListItem
+								message={message}
+								isGrouped={isGrouped}
+							/>
+						);
+					})}
 				</div>
 			</div>
-			<div className="w-48 flex flex-col overflow-y-auto">
-				{activeUsers.map((user) => (
-					<div style={{ color: user.color }}>{user.username} </div>
-				))}
-			</div>
+			<ChannelMemberList isOpen={isMembersBarOpen} users={activeUsers} />
 		</>
 	);
 };

@@ -1,1 +1,59 @@
 @import "tailwindcss";
+
+@theme {
+	/* neutral */
+	--color-neutral-50: #fafafa;
+	--color-neutral-100: #f4f4f5;
+	--color-neutral-200: #e3e3e8;
+	--color-neutral-300: #d2d2da;
+	--color-neutral-400: #9d9dae;
+	--color-neutral-500: #6d6d7e;
+	--color-neutral-600: #4e4e5f;
+	--color-neutral-700: #3c3c49;
+	--color-neutral-800: #26262b;
+	--color-neutral-900: #111115;
+	--color-neutral-950: #08080c;
+	/* primary */
+	--color-primary-50: #f3f5fc;
+	--color-primary-100: #e6ebf8;
+	--color-primary-200: #c7d4f0;
+	--color-primary-300: #96b0e3;
+	--color-primary-400: #5e87d2;
+	--color-primary-500: #3968be;
+	--color-primary-600: #294fa0;
+	--color-primary-700: #224082;
+	--color-primary-800: #20386c;
+	--color-primary-900: #1f315b;
+	--color-primary-950: #0a0f1d;
+	/* danger */
+	--color-danger-50: #fef3f2;
+	--color-danger-100: #fee5e2;
+	--color-danger-200: #fed0ca;
+	--color-danger-300: #fcb0a5;
+	--color-danger-400: #f88271;
+	--color-danger-500: #ef5944;
+	--color-danger-600: #dd3c25;
+	--color-danger-700: #b92f1c;
+	--color-danger-800: #a72e1d;
+	--color-danger-900: #7f291d;
+	--color-danger-950: #45110a;
+}
+
+.scroll-stable {
+	scrollbar-gutter: stable;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #63636342;
+	border-radius: 999px;
+	border-right: 2px solid transparent;
+	background-clip: padding-box;
+}

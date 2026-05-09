@@ -20,4 +20,4 @@
 
 ## Phase 2 - Styling
 
-- [ ] style: General UI Overhaul
+- [x] style: General UI Overhaul
