@@ -21,3 +21,10 @@
 ## Phase 2 - Styling
 
 - [x] style: General UI Overhaul
+
+## Phase 3 - Additional Features
+
+- [ ] feat: Edit Message Feature
+- [ ] feat: Reconcile Edited Message with backend or revert
+- [ ] feat: Delete Message Feature
+- [ ] feat: Reply to Message Feature
