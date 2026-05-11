@@ -17,6 +17,7 @@ const messageSchema = z.object({
 	userId: z.string(),
 	username: z.string(),
 	color: z.string(),
+	edited: z.boolean(),
 });
 
 const url = "http://localhost:3000/messages";
@@ -32,6 +33,7 @@ export const messageBoxSchema = messageSchema.omit({
 	userId: true,
 	username: true,
 	color: true,
+	edited: true,
 });
 
 export type MessageBoxShape = z.infer<typeof messageBoxSchema>;
@@ -41,6 +43,7 @@ const useMessages = () => {
 	const { currentChannel } = useChannelsContext();
 	const [scrollDown, setScrollDown] = useState<boolean>(false);
 	const { currentUser } = useUsersContext();
+	const [editedMessage, setEditedMessage] = useState<string>("");
 
 	useEffect(() => {
 		axios
@@ -64,6 +67,7 @@ const useMessages = () => {
 			userId: currentUser._id,
 			color: currentUser.color,
 			username: currentUser.username,
+			edited: false,
 		};
 		console.log(newMessage);
 		setMessages((curr) => [...curr, newMessage]);
@@ -84,6 +88,53 @@ const useMessages = () => {
 			});
 	};
 
+	const putMessage = (messageBox: MessageBoxShape) => {
+		let originalMessage: Message | undefined;
+		let newMessage: Message | undefined;
+
+		setMessages((curr) =>
+			curr.map((message) => {
+				if (message._id === editedMessage) {
+					originalMessage = message;
+					newMessage = {
+						...originalMessage,
+						content: messageBox.content,
+						edited: true,
+					};
+					return newMessage;
+				} else {
+					return message;
+				}
+			}),
+		);
+
+		if (!originalMessage) return;
+
+		if (!newMessage) return;
+
+		axios
+			.put(url + "/" + newMessage._id, {
+				...newMessage,
+				socketId: socket.id,
+			})
+			.then((res) =>
+				setMessages((curr) =>
+					curr.map((message) =>
+						message._id === newMessage?._id ? res.data : message,
+					),
+				),
+			)
+			.catch(() => {
+				setMessages((curr) =>
+					curr.map((message) =>
+						message._id === originalMessage?._id
+							? originalMessage
+							: message,
+					),
+				);
+			});
+	};
+
 	useEffect(() => {
 		const handler = (msg: Message) => setMessages((curr) => [...curr, msg]);
 		socket.on("receive_message", handler);
@@ -92,7 +143,15 @@ const useMessages = () => {
 		};
 	}, []);
 
-	return { messages, postMessage, scrollDown, setScrollDown };
+	return {
+		messages,
+		postMessage,
+		putMessage,
+		scrollDown,
+		setScrollDown,
+		editedMessage,
+		setEditedMessage,
+	};
 };
 
 export default useMessages;

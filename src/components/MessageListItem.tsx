@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { Message } from "../hooks/useMessages";
 import profileImage from "../assets/profile.png";
 import MessageOptions from "./MessageOptions";
+import useMessagesContext from "../hooks/useMessagesContext";
+import MessageEditBox from "./MessageEditBox";
 
 interface Props {
 	message: Message;
@@ -11,7 +13,21 @@ interface Props {
 const MessageListItem = ({ message, isGrouped }: Props) => {
 	const today = new Date();
 	const [isHovered, setIsHovered] = useState(false);
+	const [mode, setMode] = useState<"edit" | "view">("view");
+	const { editedMessage, setEditedMessage } = useMessagesContext();
 	let messageDate;
+
+	const triggerEditMode = () => {
+		setEditedMessage(message._id);
+		setMode("edit");
+	};
+
+	useEffect(() => {
+		if (editedMessage != message._id) {
+			setMode("view");
+		}
+	}, [editedMessage, setMode, message._id]);
+
 	if (message.createdAt) messageDate = new Date(message.createdAt);
 	const dateStatus = messageDate
 		? messageDate.getFullYear() === today.getFullYear()
@@ -34,9 +50,14 @@ const MessageListItem = ({ message, isGrouped }: Props) => {
 			<div
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
-				className={`flex relative pl-8 hover:bg-neutral-900   transition-transform py-1 ${isGrouped ? "" : "mt-5"} `}
+				className={`flex relative pl-8 ${mode === "view" ? "hover:bg-neutral-900 " : "bg-neutral-900"}  rounded-r-sm transition-transform py-1 ${isGrouped ? "" : "mt-5"} `}
 			>
-				{isHovered && <MessageOptions />}
+				{isHovered && mode === "view" && (
+					<MessageOptions
+						onEditClick={triggerEditMode}
+						message={message}
+					/>
+				)}
 				<div className="flex-none text-white w-16">
 					{isGrouped ? (
 						<span
@@ -120,7 +141,22 @@ const MessageListItem = ({ message, isGrouped }: Props) => {
 						<div
 							className={`  wrap-anywhere ${message.status === "sending" ? "text-neutral-500" : "text-white"}  pr-5 `}
 						>
-							{message.content}
+							{mode === "edit" ? (
+								<MessageEditBox message={message} />
+							) : (
+								<>
+									{message.content}
+									{message.edited ? (
+										<span
+											className={`text-neutral-500 ml-1 text-xs `}
+										>
+											(edited)
+										</span>
+									) : (
+										""
+									)}
+								</>
+							)}
 						</div>
 					</div>
 				</div>
