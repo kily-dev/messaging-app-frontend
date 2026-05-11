@@ -135,6 +135,24 @@ const useMessages = () => {
 			});
 	};
 
+	const deleteMessage = (messageId: string) => {
+		axios
+			.delete(url + "/" + messageId, {
+				data: {
+					socketId: socket.id,
+				},
+			})
+			.then((res) => {
+				console.log(res);
+				setMessages((curr) =>
+					curr.filter((message) => message._id !== messageId),
+				);
+			})
+			.catch((res) => {
+				console.log(res);
+			});
+	};
+
 	useEffect(() => {
 		const handler = (msg: Message) => setMessages((curr) => [...curr, msg]);
 		socket.on("receive_message", handler);
@@ -147,6 +165,7 @@ const useMessages = () => {
 		messages,
 		postMessage,
 		putMessage,
+		deleteMessage,
 		scrollDown,
 		setScrollDown,
 		editedMessage,

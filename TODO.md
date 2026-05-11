@@ -25,6 +25,5 @@
 ## Phase 3 - Additional Features
 
 - [x] feat: Edit Message Feature
-- [ ] feat: Reconcile Edited Message with backend or revert
-- [ ] feat: Delete Message Feature
+- [x] feat: Delete Message Feature
 - [ ] feat: Reply to Message Feature
