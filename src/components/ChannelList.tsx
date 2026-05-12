@@ -26,7 +26,7 @@ const ChannelList = ({ isOpen }: Props) => {
 	return (
 		<>
 			<div
-				className={` ${isOpen ? "w-62" : "w-0"}  border-r border-neutral-800 flex flex-col flex-none overflow-y-auto overflow-y-hidden transition-all duration-300 scroll-stable`}
+				className={` ${isOpen ? "w-62" : "w-0"}  border-r border-neutral-800 flex flex-col flex-none overflow-y-auto overflow-x-hidden transition-all duration-300 scroll-stable`}
 			>
 				<span className="text-neutral-400 text-center text-sm font-semibold mt-1 mb-2 mx-2">
 					Channels
