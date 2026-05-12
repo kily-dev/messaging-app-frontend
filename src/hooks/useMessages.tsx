@@ -154,10 +154,25 @@ const useMessages = () => {
 	};
 
 	useEffect(() => {
-		const handler = (msg: Message) => setMessages((curr) => [...curr, msg]);
-		socket.on("receive_message", handler);
+		const receiveHandler = (msg: Message) =>
+			setMessages((curr) => [...curr, msg]);
+		const editHandler = (msg: Message) =>
+			setMessages((curr) =>
+				curr.map((message) =>
+					message._id === msg._id ? msg : message,
+				),
+			);
+		const deleteHandler = (id: string) =>
+			setMessages((curr) => curr.filter((message) => message._id !== id));
+
+		socket.on("receive_message", receiveHandler);
+		socket.on("edit_message", editHandler);
+		socket.on("delete_message", deleteHandler);
+
 		return () => {
-			socket.off("receive_message", handler);
+			socket.off("receive_message", receiveHandler);
+			socket.off("edit_message", editHandler);
+			socket.off("delete_message", deleteHandler);
 		};
 	}, []);
 
