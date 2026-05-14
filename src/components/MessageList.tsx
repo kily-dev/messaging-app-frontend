@@ -51,7 +51,9 @@ const MessageList = () => {
 											previousMessage.createdAt,
 										).getTime();
 									if (diff < 420000 && diff > -420000) {
-										isGrouped = true;
+										if (!message.isReply) {
+											isGrouped = true;
+										}
 									}
 								}
 						}

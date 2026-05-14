@@ -18,6 +18,12 @@ const messageSchema = z.object({
 	username: z.string(),
 	color: z.string(),
 	edited: z.boolean(),
+	isReply: z.boolean(),
+	referencedMessageId: z.string(),
+	referencedMessageContent: z.string(),
+	referencedUserId: z.string(),
+	referencedUsername: z.string(),
+	referencedColor: z.string(),
 });
 
 const url = "http://localhost:3000/messages";
@@ -34,6 +40,12 @@ export const messageBoxSchema = messageSchema.omit({
 	username: true,
 	color: true,
 	edited: true,
+	isReply: true,
+	referencedMessageId: true,
+	referencedMessageContent: true,
+	referencedUserId: true,
+	referencedUsername: true,
+	referencedColor: true,
 });
 
 export type MessageBoxShape = z.infer<typeof messageBoxSchema>;
@@ -44,6 +56,9 @@ const useMessages = () => {
 	const [scrollDown, setScrollDown] = useState<boolean>(false);
 	const { currentUser } = useUsersContext();
 	const [editedMessage, setEditedMessage] = useState<string>("");
+	const [referencedMessage, setReferencedMessage] = useState<Message | null>(
+		null,
+	);
 
 	useEffect(() => {
 		axios
@@ -68,6 +83,16 @@ const useMessages = () => {
 			color: currentUser.color,
 			username: currentUser.username,
 			edited: false,
+			isReply: !!referencedMessage,
+			referencedMessageId: referencedMessage ? referencedMessage._id : "",
+			referencedMessageContent: referencedMessage
+				? referencedMessage.content
+				: "",
+			referencedUserId: referencedMessage ? referencedMessage.userId : "",
+			referencedUsername: referencedMessage
+				? referencedMessage.username
+				: "",
+			referencedColor: referencedMessage ? referencedMessage.color : "NC",
 		};
 		console.log(newMessage);
 		setMessages((curr) => [...curr, newMessage]);
@@ -185,6 +210,8 @@ const useMessages = () => {
 		setScrollDown,
 		editedMessage,
 		setEditedMessage,
+		referencedMessage,
+		setReferencedMessage,
 	};
 };
 
