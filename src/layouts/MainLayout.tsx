@@ -65,12 +65,16 @@ const MainLayout = () => {
 								</div>
 
 								<div>
-									<TopBarButton
-										onClick={() =>
-											setMembersBar((curr) => !curr)
-										}
-										icon={<FaUserCircle size={20} />}
-									/>
+									{currentChannel ? (
+										<TopBarButton
+											onClick={() =>
+												setMembersBar((curr) => !curr)
+											}
+											icon={<FaUserCircle size={20} />}
+										/>
+									) : (
+										""
+									)}
 								</div>
 							</div>
 
@@ -80,7 +84,23 @@ const MainLayout = () => {
 								{currentChannel ? (
 									<Outlet context={{ isMembersBarOpen }} />
 								) : (
-									"Join a Channel to start!"
+									<div className="text-white w-full flex flex-col gap-3 items-center justify-center">
+										<p className="text-3xl font-bold">
+											Welcome to Schnell!
+										</p>
+										<p className="text-xl">
+											Click on a Channel to join a
+											conversation!
+										</p>
+										<div className="flex items-center justify-center text-lg text-neutral-400 hover: gap-6">
+											<p className="hover:text-2xl duration-300 font-semibold">
+												Created by Ilyass Kaddani
+											</p>
+											<p className="hover:text-2xl duration-300 font-semibold">
+												Made using the MERN Stack
+											</p>
+										</div>
+									</div>
 								)}
 							</div>
 						</div>

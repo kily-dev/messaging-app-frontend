@@ -39,6 +39,26 @@ const useChannels = () => {
 			.catch((err) => console.error(err));
 	};
 
+	useEffect(() => {
+		const joinHandler = (user: User) => {
+			setActiveUsers((curr) => [...curr, user]);
+		};
+
+		const leaveHandler = (userId: string) => {
+			setActiveUsers((curr) =>
+				curr.filter((user) => user._id !== userId),
+			);
+		};
+
+		socket.on("user_joined_room", joinHandler);
+		socket.on("user_left_room", leaveHandler);
+
+		return () => {
+			socket.off("user_joined_room", joinHandler);
+			socket.off("user_left_room", leaveHandler);
+		};
+	}, []);
+
 	return { channels, currentChannel, channelSwitch, activeUsers };
 };
 
