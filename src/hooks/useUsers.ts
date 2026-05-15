@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import { socket } from "../sockets/socket";
 
 const userSchema = z.object({
 	_id: z.string(),
@@ -16,19 +17,36 @@ export const url = "http://localhost:3000/users";
 const useUsers = () => {
 	const [currentUser, setCurrentUser] = useState<User>();
 
+	const fetchCurrentUser = (sessionId: string, firstUse: boolean) => {
+		axios
+			.get<User>(url + "/current", {
+				params: { sessionId: sessionId },
+				data: { socketId: socket.id },
+			})
+			.then((res) => {
+				setCurrentUser(res.data);
+				if (firstUse) {
+					socket.emit("first_use", sessionId);
+				}
+			})
+			.catch(() =>
+				setTimeout(() => fetchCurrentUser(sessionId, firstUse), 1000),
+			);
+	};
+
 	useEffect(() => {
 		let sessionId = localStorage.getItem("sessionId");
+		let firstUse = false;
 		if (!sessionId) {
 			sessionId = uuidv4();
 			localStorage.setItem("sessionId", sessionId);
+			firstUse = true;
 		}
 
-		axios
-			.get<User>(url + "/current", { params: { sessionId: sessionId } })
-			.then((res) => setCurrentUser(res.data));
+		fetchCurrentUser(sessionId, firstUse);
 	}, []);
 
-	return { currentUser };
+	return { currentUser, setCurrentUser };
 };
 
 export default useUsers;
