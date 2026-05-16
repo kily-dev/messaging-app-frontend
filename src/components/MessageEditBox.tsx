@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
 	messageBoxSchema,
@@ -14,6 +14,7 @@ interface Props {
 
 const MessageEditBox = ({ message }: Props) => {
 	const {
+		setFocus,
 		register,
 		handleSubmit,
 		reset,
@@ -33,6 +34,8 @@ const MessageEditBox = ({ message }: Props) => {
 		reset();
 		setEditedMessage("");
 	};
+
+	setFocus("content");
 	return (
 		<form className="w-full" onSubmit={handleSubmit(submitHandler)}>
 			<input

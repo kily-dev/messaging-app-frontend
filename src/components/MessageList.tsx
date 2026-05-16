@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useMessagesContext from "../hooks/useMessagesContext";
 import MessageListItem from "./MessageListItem";
 import { socket } from "../sockets/socket";
@@ -9,10 +9,17 @@ import ChannelMemberList from "./ChannelMemberList";
 import { useOutletContext } from "react-router-dom";
 
 const MessageList = () => {
-	const { messages, scrollDown, setScrollDown } = useMessagesContext();
+	const {
+		messages,
+		scrollDown,
+		setScrollDown,
+		isNearBottom,
+		setIsNearBottom,
+	} = useMessagesContext();
 	const { activeUsers } = useChannelsContext();
 	const { isMembersBarOpen } = useOutletContext();
 	const ref = useRef<HTMLDivElement>(null);
+	const scrollRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (scrollDown) {
@@ -21,9 +28,20 @@ const MessageList = () => {
 		}
 	}, [scrollDown, setScrollDown]);
 
+	const onScroll = () => {
+		if (scrollRef.current) {
+			setIsNearBottom(scrollRef.current.scrollTop > -400);
+		}
+		console.log(isNearBottom);
+	};
+
 	return (
 		<>
-			<div className=" flex flex-1 min-h-0 flex-col-reverse overflow-y-auto scroll-stable">
+			<div
+				ref={scrollRef}
+				onScroll={onScroll}
+				className=" flex flex-1 min-h-0 flex-col-reverse overflow-y-auto scroll-stable"
+			>
 				<div className="sticky ml-2 mr-1 bottom-2 z-99 justify-items-center ">
 					<MessageBox />
 				</div>

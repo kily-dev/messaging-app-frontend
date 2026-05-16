@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import { messageBoxSchema, type MessageBoxShape } from "../hooks/useMessages";
 import useMessagesContext from "../hooks/useMessagesContext";
@@ -8,6 +8,7 @@ import { IoIosCloseCircle } from "react-icons/io";
 
 const MessageBox = () => {
 	const {
+		setFocus,
 		register,
 		handleSubmit,
 		reset,
@@ -31,6 +32,12 @@ const MessageBox = () => {
 	const onCancelReply = () => {
 		setReferencedMessage(null);
 	};
+
+	useEffect(() => {
+		if (referencedMessage) {
+			setFocus("content");
+		}
+	}, [referencedMessage]);
 	return (
 		<form className="w-full" onSubmit={handleSubmit(submitHandler)}>
 			{referencedMessage ? (

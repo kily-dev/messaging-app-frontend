@@ -17,7 +17,7 @@ export const url = "http://localhost:3000/users";
 const useUsers = () => {
 	const [currentUser, setCurrentUser] = useState<User>();
 
-	const fetchCurrentUser = (sessionId: string, firstUse: boolean) => {
+	const fetchCurrentUser = (sessionId: string) => {
 		axios
 			.get<User>(url + "/current", {
 				params: { sessionId: sessionId },
@@ -25,25 +25,20 @@ const useUsers = () => {
 			})
 			.then((res) => {
 				setCurrentUser(res.data);
-				if (firstUse) {
-					socket.emit("first_use", sessionId);
-				}
+
+				socket.emit("first_use", sessionId);
 			})
-			.catch(() =>
-				setTimeout(() => fetchCurrentUser(sessionId, firstUse), 1000),
-			);
+			.catch(() => setTimeout(() => fetchCurrentUser(sessionId), 1000));
 	};
 
 	useEffect(() => {
 		let sessionId = localStorage.getItem("sessionId");
-		let firstUse = false;
 		if (!sessionId) {
 			sessionId = uuidv4();
 			localStorage.setItem("sessionId", sessionId);
-			firstUse = true;
 		}
 
-		fetchCurrentUser(sessionId, firstUse);
+		fetchCurrentUser(sessionId);
 	}, []);
 
 	return { currentUser, setCurrentUser };

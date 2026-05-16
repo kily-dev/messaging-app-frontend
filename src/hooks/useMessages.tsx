@@ -62,6 +62,7 @@ const useMessages = () => {
 	const [messageOnDeletion, setMessageOnDeletion] = useState<Message | null>(
 		null,
 	);
+	const [isNearBottom, setIsNearBottom] = useState<boolean>(false);
 
 	useEffect(() => {
 		axios
@@ -182,8 +183,10 @@ const useMessages = () => {
 	};
 
 	useEffect(() => {
-		const receiveHandler = (msg: Message) =>
+		const receiveHandler = (msg: Message) => {
 			setMessages((curr) => [...curr, msg]);
+			setScrollDown(isNearBottom);
+		};
 		const editHandler = (msg: Message) =>
 			setMessages((curr) =>
 				curr.map((message) =>
@@ -202,7 +205,7 @@ const useMessages = () => {
 			socket.off("edit_message", editHandler);
 			socket.off("delete_message", deleteHandler);
 		};
-	}, []);
+	}, [isNearBottom]);
 
 	return {
 		messages,
@@ -217,6 +220,8 @@ const useMessages = () => {
 		setReferencedMessage,
 		messageOnDeletion,
 		setMessageOnDeletion,
+		isNearBottom,
+		setIsNearBottom,
 	};
 };
 
