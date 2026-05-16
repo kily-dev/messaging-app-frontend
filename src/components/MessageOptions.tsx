@@ -14,10 +14,11 @@ interface Props {
 
 const MessageOptions = ({ message, onEditClick }: Props) => {
 	const { currentUser } = useUsersContext();
-	const { deleteMessage, setReferencedMessage } = useMessagesContext();
+	const { deleteMessage, setReferencedMessage, setMessageOnDeletion } =
+		useMessagesContext();
 
 	const onDelete = () => {
-		deleteMessage(message._id);
+		setMessageOnDeletion(message);
 	};
 
 	const onReply = () => {

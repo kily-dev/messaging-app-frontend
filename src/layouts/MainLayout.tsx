@@ -7,10 +7,15 @@ import ChannelList from "../components/ChannelList";
 import TopBarButton from "../components/TopBarButton";
 import { FaHashtag, FaUserCircle } from "react-icons/fa";
 import { TbLayoutSidebarLeftExpandFilled } from "react-icons/tb";
+import { IoClose } from "react-icons/io5";
 import { useMediaQuery } from "react-responsive";
+import useMessagesContext from "../hooks/useMessagesContext";
+import DeletedMessagePreview from "../components/DeletedMessagePreview";
 
 const MainLayout = () => {
 	const { currentChannel } = useChannelsContext();
+	const { deleteMessage, messageOnDeletion, setMessageOnDeletion } =
+		useMessagesContext();
 	const [isChannelsBarOpen, setChannelsBar] = useState<boolean>(true);
 	const [isMembersBarOpen, setMembersBar] = useState<boolean>(true);
 
@@ -27,6 +32,62 @@ const MainLayout = () => {
 	}, [isDesktop, setChannelsBar, setMembersBar]);
 	return (
 		<div className="flex flex-col min-h-screen max-h-screen overflow-hidden bg-neutral-950">
+			{messageOnDeletion ? (
+				<>
+					<div className="fixed top-0 bottom-0 z-999">
+						<div className="bg-neutral-950/50 flex min-h-screen max-h-screen min-w-screen max-w-screen justify-center items-center">
+							<div className=" relative border flex flex-col border-neutral-800 bg-neutral-900 rounded-md text-white p-5 w-112 ">
+								<div className="absolute top-5 right-5">
+									<IoClose
+										onClick={() => {
+											setMessageOnDeletion(null);
+										}}
+										size={38}
+										className=" text-neutral-300 cursor-pointer rounded-full p-2 hover:bg-neutral-800"
+									/>
+								</div>
+								<div className="font-bold text-xl">
+									Delete Message
+								</div>
+								<div className="text-neutral-300">
+									You will be Deleting the Following message:
+								</div>
+								<div className="m-5">
+									<DeletedMessagePreview
+										message={messageOnDeletion}
+									/>
+								</div>
+								<div className="flex justify-around">
+									<div
+										onClick={() => {
+											deleteMessage(
+												messageOnDeletion._id,
+											);
+											setMessageOnDeletion(null);
+										}}
+										className="py-2 px-10 cursor-pointer rounded-xl bg-danger-500 hover:bg-danger-600   border border-danger-500/80 "
+									>
+										{" "}
+										Proceed
+									</div>
+
+									<div
+										onClick={() => {
+											setMessageOnDeletion(null);
+										}}
+										className="py-2 px-10 cursor-pointer rounded-xl bg-neutral-800/70 hover:bg-neutral-800/20 border border-neutral-800   "
+									>
+										{" "}
+										Cancel
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</>
+			) : (
+				""
+			)}
 			<header className="flex-none">
 				<nav>
 					<NavBar />

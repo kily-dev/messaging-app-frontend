@@ -59,6 +59,9 @@ const useMessages = () => {
 	const [referencedMessage, setReferencedMessage] = useState<Message | null>(
 		null,
 	);
+	const [messageOnDeletion, setMessageOnDeletion] = useState<Message | null>(
+		null,
+	);
 
 	useEffect(() => {
 		axios
@@ -212,6 +215,8 @@ const useMessages = () => {
 		setEditedMessage,
 		referencedMessage,
 		setReferencedMessage,
+		messageOnDeletion,
+		setMessageOnDeletion,
 	};
 };
 
