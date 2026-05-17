@@ -12,7 +12,7 @@ const userSchema = z.object({
 
 export type User = z.infer<typeof userSchema>;
 
-export const url = "http://localhost:3000/users";
+export const url = import.meta.env.VITE_API_URL + "/users";
 
 const useUsers = () => {
 	const [currentUser, setCurrentUser] = useState<User>();

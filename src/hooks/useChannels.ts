@@ -14,7 +14,7 @@ const channelSchema = z.object({
 
 export type Channel = z.infer<typeof channelSchema>;
 
-export const url = "http://localhost:3000/channels";
+export const url = import.meta.env.VITE_API_URL + "/channels";
 
 const useChannels = () => {
 	const [channels, setChannels] = useState<Channel[]>();
@@ -22,6 +22,7 @@ const useChannels = () => {
 	const [activeUsers, setActiveUsers] = useState<User[]>([]);
 
 	useEffect(() => {
+		console.log(import.meta.env.VITE_API_URL);
 		axios
 			.get<Channel[]>(url)
 			.then((data) => setChannels(data.data))

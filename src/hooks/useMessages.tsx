@@ -26,7 +26,7 @@ const messageSchema = z.object({
 	referencedColor: z.string(),
 });
 
-const url = "http://localhost:3000/messages";
+const url = import.meta.env.VITE_API_URL + "/messages";
 
 export type Message = z.infer<typeof messageSchema>;
 
