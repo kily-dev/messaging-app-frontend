@@ -1,4 +1,3 @@
-import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
 	messageBoxSchema,
@@ -13,20 +12,14 @@ interface Props {
 }
 
 const MessageEditBox = ({ message }: Props) => {
-	const {
-		setFocus,
-		register,
-		handleSubmit,
-		reset,
-		formState: { errors },
-	} = useForm<MessageBoxShape>({
-		resolver: zodResolver(messageBoxSchema),
-		defaultValues: {
-			content: message.content,
-		},
-	});
-	const { editedMessage, setEditedMessage, putMessage } =
-		useMessagesContext();
+	const { setFocus, register, handleSubmit, reset } =
+		useForm<MessageBoxShape>({
+			resolver: zodResolver(messageBoxSchema),
+			defaultValues: {
+				content: message.content,
+			},
+		});
+	const { setEditedMessage, putMessage } = useMessagesContext();
 
 	const submitHandler = async (data: MessageBoxShape) => {
 		console.log("Edit Sent: ", data);

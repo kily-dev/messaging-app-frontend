@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import useMessagesContext from "../hooks/useMessagesContext";
 import MessageListItem from "./MessageListItem";
-import { socket } from "../sockets/socket";
 import useChannelsContext from "../hooks/useChannelsContext";
 import MessageBox from "./MessageBox";
-import ChannelMemberListItem from "./ChannelMemberListItem";
 import ChannelMemberList from "./ChannelMemberList";
 import { useOutletContext } from "react-router-dom";
 
@@ -17,7 +15,9 @@ const MessageList = () => {
 		setIsNearBottom,
 	} = useMessagesContext();
 	const { activeUsers } = useChannelsContext();
-	const { isMembersBarOpen } = useOutletContext();
+	const { isMembersBarOpen } = useOutletContext<{
+		isMembersBarOpen: boolean;
+	}>();
 	const ref = useRef<HTMLDivElement>(null);
 	const scrollRef = useRef<HTMLDivElement>(null);
 

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import profileImage from "../assets/profile.png";
 import type { User } from "../hooks/useUsers";
 

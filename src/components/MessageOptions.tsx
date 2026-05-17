@@ -1,4 +1,3 @@
-import React from "react";
 import type { Message } from "../hooks/useMessages";
 import MessageOptionsItem from "./MessageOptionsItem";
 import { MdModeEdit } from "react-icons/md";
@@ -14,8 +13,7 @@ interface Props {
 
 const MessageOptions = ({ message, onEditClick }: Props) => {
 	const { currentUser } = useUsersContext();
-	const { deleteMessage, setReferencedMessage, setMessageOnDeletion } =
-		useMessagesContext();
+	const { setReferencedMessage, setMessageOnDeletion } = useMessagesContext();
 
 	const onDelete = () => {
 		setMessageOnDeletion(message);

@@ -4,7 +4,6 @@ import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { socket } from "../sockets/socket";
 import useChannelsContext from "./useChannelsContext";
-import useUsers from "./useUsers";
 import useUsersContext from "./useUsersContext";
 
 const messageSchema = z.object({

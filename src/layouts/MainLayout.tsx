@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import MessageBox from "../components/MessageBox";
 import useChannelsContext from "../hooks/useChannelsContext";
 import { Outlet } from "react-router-dom";
 import ChannelList from "../components/ChannelList";

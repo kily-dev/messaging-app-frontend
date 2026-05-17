@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { socket } from "../sockets/socket";
-import { useNavigate, useParams } from "react-router-dom";
 import { url as userUrl, type User } from "./useUsers";
 
 const channelSchema = z.object({

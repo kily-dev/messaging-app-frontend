@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { ChannelsContext } from "../providers/ChannelsProvider";
 
 const useChannelsContext = () => {

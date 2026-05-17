@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Message } from "../hooks/useMessages";
 import profileImage from "../assets/profile.png";
 import MessageOptions from "./MessageOptions";

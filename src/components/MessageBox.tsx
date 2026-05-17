@@ -1,24 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
-import { useForm, type FieldValues } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { messageBoxSchema, type MessageBoxShape } from "../hooks/useMessages";
 import useMessagesContext from "../hooks/useMessagesContext";
-import profileImage from "../assets/profile.png";
 import { IoIosCloseCircle } from "react-icons/io";
 
 const MessageBox = () => {
-	const {
-		setFocus,
-		register,
-		handleSubmit,
-		reset,
-		formState: { errors },
-	} = useForm<MessageBoxShape>({
-		resolver: zodResolver(messageBoxSchema),
-		defaultValues: {
-			content: "",
-		},
-	});
+	const { setFocus, register, handleSubmit, reset } =
+		useForm<MessageBoxShape>({
+			resolver: zodResolver(messageBoxSchema),
+			defaultValues: {
+				content: "",
+			},
+		});
 
 	const { postMessage, referencedMessage, setReferencedMessage } =
 		useMessagesContext();
