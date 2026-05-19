@@ -32,7 +32,6 @@ const MessageList = () => {
 		if (scrollRef.current) {
 			setIsNearBottom(scrollRef.current.scrollTop > -400);
 		}
-		console.log(isNearBottom);
 	};
 
 	return (
